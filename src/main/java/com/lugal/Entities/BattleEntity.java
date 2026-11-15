@@ -16,7 +16,6 @@ public class BattleEntity implements TargetableEntity {
     private final Map<StatEnum, Integer> currentStats = new EnumMap<>(StatEnum.class);
     private final Map<StatEnum, Integer> maxStats = new EnumMap<>(StatEnum.class);
 
-
     private final Map<AppliedStatusEnum, Integer> activeStatuses = new EnumMap<>(AppliedStatusEnum.class);
     private final Map<StatModEnum, Integer> activeStatMods = new EnumMap<>(StatModEnum.class);
 
@@ -53,14 +52,43 @@ public class BattleEntity implements TargetableEntity {
         return maxStats.getOrDefault(stat, 0);
     }
 
-    @Override 
+    @Override
     public boolean hasStatus(AppliedStatusEnum status) {
         return this.activeStatuses.containsKey(status);
     }
 
     @Override
     public int getEffectiveStat(StatEnum stat) {
-        return 1;
+        int baseStat = this.getMaxStat(stat);
+        float mod = switch (stat) {
+            case ATK ->
+                (this.hasStatModification(StatModEnum.OOMPH) ? StatModEnum.OOMPH.modifier() : 0f) +
+                (this.hasStatModification(StatModEnum.OOMPHLE) ? StatModEnum.OOMPHLE.modifier() : 0f) +
+                (this.hasStatModification(StatModEnum.BLUNT) ? StatModEnum.BLUNT.modifier() : 0f) +
+                (this.hasStatModification(StatModEnum.KABLUNT) ? StatModEnum.KABLUNT.modifier() : 0f);
+            
+            case WIS ->
+                    (this.hasStatModification(StatModEnum.PING) ? StatModEnum.PING.modifier() : 0f) +
+                    (this.hasStatModification(StatModEnum.KAPING) ? StatModEnum.KAPING.modifier() : 0f) +
+                    (this.hasStatModification(StatModEnum.DIM) ? StatModEnum.DIM.modifier() : 0f) +
+                    (this.hasStatModification(StatModEnum.KADIM) ? StatModEnum.KADIM.modifier() : 0f);
+        
+            case DEF ->
+                (this.hasStatModification(StatModEnum.BUFF) ? StatModEnum.BUFF.modifier() : 0f) +
+                (this.hasStatModification(StatModEnum.KABUFF) ? StatModEnum.KABUFF.modifier() : 0f) +
+                (this.hasStatModification(StatModEnum.SAP) ? StatModEnum.SAP.modifier() : 0f) +
+                (this.hasStatModification(StatModEnum.KASAP) ? StatModEnum.KASAP.modifier() : 0f);
+            
+            case AGI ->
+                (this.hasStatModification(StatModEnum.ACCELERATE) ? StatModEnum.ACCELERATE.modifier() : 0f) +
+                (this.hasStatModification(StatModEnum.ACCELERATLE) ? StatModEnum.ACCELERATLE.modifier() : 0f) +
+                (this.hasStatModification(StatModEnum.DECELERATE) ? StatModEnum.DECELERATE.modifier() : 0f) +
+                (this.hasStatModification(StatModEnum.DECELERATLE) ? StatModEnum.DECELERATLE.modifier() : 0f);
+            
+            default -> 0f;
+        };
+
+        return (int) (baseStat * (1f + mod));
     }
 
     @Override
