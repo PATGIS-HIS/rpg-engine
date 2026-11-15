@@ -1,5 +1,8 @@
 package com.lugal.Enums;
 
+/**
+ * Active non-stat altering buff/debuff spells/abilities
+*/
 public enum AppliedStatusEnum {
     PARALYZE,           // character is paralyzed
     POISON,             // character is poisoned
