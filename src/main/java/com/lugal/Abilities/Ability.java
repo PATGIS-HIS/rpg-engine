@@ -5,7 +5,7 @@ import java.util.List;
 import com.lugal.BattleLogic.BattleActionProcessor;
 import com.lugal.Entities.TargetableEntity;
 import com.lugal.Enums.ElementEnum;
-import com.lugal.Enums.StatusEnum;
+import com.lugal.Enums.AppliedStatusEnum;
 import com.lugal.Enums.TargetEnum;
 
 public class Ability {
@@ -13,7 +13,7 @@ public class Ability {
     private final int mpCost;
     private final TargetEnum targetScope;
     private final ElementEnum element;
-    private final StatusEnum status;
+    private final AppliedStatusEnum status;
     private final AbilityEffect effect;
 
     private Ability(Builder builder) {
@@ -35,7 +35,7 @@ public class Ability {
     public int getMpCost() { return mpCost; }
     public TargetEnum getTargetScope() { return targetScope; }
     public ElementEnum getElement() { return element; }
-    public StatusEnum getStatus() { return status; }
+    public AppliedStatusEnum getStatus() { return status; }
 
     public interface AbilityEffect {
         void apply(TargetableEntity caster, TargetableEntity target, BattleActionProcessor processor);
@@ -46,7 +46,7 @@ public class Ability {
         private int mpCost = 0;
         private TargetEnum targetScope = TargetEnum.SINGLE_ENEMY;
         private ElementEnum element = ElementEnum.NONE;
-        private StatusEnum status = null;
+        private AppliedStatusEnum status = null;
         private AbilityEffect effect = (caster, target, processor) -> {};
 
         public Builder setName(String name) {
@@ -69,7 +69,7 @@ public class Ability {
             return this;
         }
 
-        public Builder setStatusEffect(StatusEnum status) {
+        public Builder setStatusEffect(AppliedStatusEnum status) {
             this.status = status;
             return this;
         }
