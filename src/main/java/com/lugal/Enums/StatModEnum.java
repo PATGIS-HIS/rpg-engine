@@ -31,4 +31,3 @@ public enum StatModEnum {
         return modifier;
     }
 }
-
