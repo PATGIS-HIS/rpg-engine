@@ -1,7 +1,6 @@
 package com.lugal.Entities;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.lugal.Enums.ElementEnum;
