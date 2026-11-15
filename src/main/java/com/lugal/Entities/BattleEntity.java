@@ -25,15 +25,15 @@ public class BattleEntity implements TargetableEntity {
     public BattleEntity(Entity baseEntity) {
         this.baseEntity = baseEntity;
 
-        maxStats.put(StatEnum.HP, baseEntity.getHp());
-        maxStats.put(StatEnum.MP, baseEntity.getMp());
-        maxStats.put(StatEnum.ATK, baseEntity.getAtk());
-        maxStats.put(StatEnum.STR, baseEntity.getStr());
-        maxStats.put(StatEnum.DEF, baseEntity.getDef());
-        maxStats.put(StatEnum.RES, baseEntity.getRes());
-        maxStats.put(StatEnum.AGI, baseEntity.getAgi());
-        maxStats.put(StatEnum.WIS, baseEntity.getWis());
-        maxStats.put(StatEnum.LUCK, baseEntity.getLuck());
+        maxStats.put(StatEnum.HP, baseEntity.getStat(StatEnum.HP));
+        maxStats.put(StatEnum.MP, baseEntity.getStat(StatEnum.MP));
+        maxStats.put(StatEnum.ATK, baseEntity.getStat(StatEnum.ATK));
+        maxStats.put(StatEnum.STR, baseEntity.getStat(StatEnum.STR));
+        maxStats.put(StatEnum.DEF, baseEntity.getStat(StatEnum.DEF));
+        maxStats.put(StatEnum.RES, baseEntity.getStat(StatEnum.RES));
+        maxStats.put(StatEnum.AGI, baseEntity.getStat(StatEnum.AGI));
+        maxStats.put(StatEnum.WIS, baseEntity.getStat(StatEnum.WIS));
+        maxStats.put(StatEnum.LUCK, baseEntity.getStat(StatEnum.LUCK));
 
         currentStats.putAll(maxStats);
     }
