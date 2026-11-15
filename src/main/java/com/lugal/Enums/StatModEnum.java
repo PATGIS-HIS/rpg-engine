@@ -1,7 +1,7 @@
 package com.lugal.Enums;
 
 /**
- * Enum of stat modifiers
+ * Turn persistant modifiers to core stats
  */
 public enum StatModEnum {
     OOMPH(1.0f),

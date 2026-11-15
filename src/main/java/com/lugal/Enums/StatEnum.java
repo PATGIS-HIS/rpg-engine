@@ -1,7 +1,7 @@
 package com.lugal.Enums;
 
 /**
- * Enum of stat types
+ * core stats
  */
 public enum StatEnum {
     HP,     // health points

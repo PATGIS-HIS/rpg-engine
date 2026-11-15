@@ -1,7 +1,7 @@
 package com.lugal.Enums;
 
 /**
- * Enum of elemental resistance/damage types
+ * elemental resistances
  */
 public enum ElementEnum {
     NONE,
