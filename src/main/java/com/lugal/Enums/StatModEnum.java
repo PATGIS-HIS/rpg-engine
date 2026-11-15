@@ -1,5 +1,8 @@
 package com.lugal.Enums;
 
+/**
+ * Enum of stat modifiers
+ */
 public enum StatModEnum {
     OOMPH(1.0f),
     OOMPHLE(0.5f),
