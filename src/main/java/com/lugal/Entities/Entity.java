@@ -18,8 +18,8 @@ public class Entity {
     private Entity(Builder builder) {
         this.name = builder.name;
         this.stats = new EnumMap<>(builder.stats);
-        this.elementResistances = new HashMap<>(builder.elementResistances);
-        this.statusResistances = new HashMap<>(builder.statusResistances);
+        this.elementResistances = new EnumMap<>(builder.elementResistances);
+        this.statusResistances = new EnumMap<>(builder.statusResistances);
     }
     
     public String getName() { return name; }
@@ -40,8 +40,8 @@ public class Entity {
         private String name = "";
         
         private final Map<StatEnum, Integer> stats = new EnumMap<>(StatEnum.class);
-        private final Map<ElementEnum, Float> elementResistances = new HashMap<>();
-        private final Map<StatusResistanceEnum, Float> statusResistances = new HashMap<>();
+        private final Map<ElementEnum, Float> elementResistances = new EnumMap<>(ElementEnum.class);
+        private final Map<StatusResistanceEnum, Float> statusResistances = new EnumMap<>(StatusResistanceEnum.class);
 
         public Builder setName(String name) {
             this.name = name;
