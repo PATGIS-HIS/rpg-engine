@@ -1,8 +1,10 @@
 package com.lugal.Entities;
 
+import com.lugal.Enums.AppliedStatusEnum;
 import com.lugal.Enums.ElementEnum;
 import com.lugal.Enums.StatEnum;
-import com.lugal.Enums.StatusEnum;
+import com.lugal.Enums.StatModEnum;
+import com.lugal.Enums.StatusResistanceEnum;
 
 public interface TargetableEntity {
     
@@ -15,10 +17,13 @@ public interface TargetableEntity {
     int getEffectiveStat(StatEnum stat);
     void clearStatDelta(StatEnum stat);
 
-    void applyStatus(StatusEnum status, Integer duration);
+    void applyStatus(AppliedStatusEnum status, Integer duration);
 
     float getElementResistances(ElementEnum element);
-    float getStatusReistances(StatusEnum status);
+    float getStatusReistances(StatusResistanceEnum status);
+
+    boolean hasStatModification(StatModEnum status);
+    boolean hasStatus(AppliedStatusEnum status);
 
     void setDefending(boolean defending);
     boolean isDefending();

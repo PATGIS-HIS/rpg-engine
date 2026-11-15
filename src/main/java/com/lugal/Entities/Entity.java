@@ -3,16 +3,17 @@ package com.lugal.Entities;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.lugal.Enums.AppliedStatusEnum;
 import com.lugal.Enums.ElementEnum;
-import com.lugal.Enums.StatusEnum;
+import com.lugal.Enums.StatusResistanceEnum;
 
 public class Entity {
     
     private final String name;
     private final int hp, mp, atk, str, def, res, agi, wis, luck;
     private final Map<ElementEnum, Float> elementResistances;
-    private final Map<StatusEnum, Float> statusResistances;
-    private final Map<StatusEnum, Integer> activeStatuses;
+    private final Map<StatusResistanceEnum, Float> statusResistances;
+    private final Map<AppliedStatusEnum, Integer> activeStatuses;
 
     private Entity(Builder builder) {
         this.name = builder.name;
@@ -46,11 +47,11 @@ public class Entity {
         return elementResistances.getOrDefault(type, 0.0f);
     }
 
-    public float getStatusResistances(StatusEnum type) {
+    public float getStatusResistances(StatusResistanceEnum type) {
         return statusResistances.getOrDefault(type, 0.0f);
     }
 
-    public Map<StatusEnum, Integer> getActiveStatuses() {
+    public Map<AppliedStatusEnum, Integer> getActiveStatuses() {
         return activeStatuses;
     }
 
@@ -60,14 +61,14 @@ public class Entity {
         private int hp, mp, atk, str, def, res, agi, wis, luck;
 
         private final Map<ElementEnum, Float> elementResistances = new HashMap<>();
-        private final Map<StatusEnum, Float> statusResistances = new HashMap<>();
+        private final Map<StatusResistanceEnum, Float> statusResistances = new HashMap<>();
 
         public Builder setElementalResistance(ElementEnum type, float value) {
             elementResistances.put(type, value);
             return this;
         }
 
-        public Builder setStatusResistance(StatusEnum effect, float value) {
+        public Builder setStatusResistance(StatusResistanceEnum effect, float value) {
             statusResistances.put(effect, value);
             return this;
         }

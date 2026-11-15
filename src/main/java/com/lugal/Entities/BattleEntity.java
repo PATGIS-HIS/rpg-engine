@@ -5,7 +5,9 @@ import java.util.Map;
 
 import com.lugal.Enums.ElementEnum;
 import com.lugal.Enums.StatEnum;
-import com.lugal.Enums.StatusEnum;
+import com.lugal.Enums.StatModEnum;
+import com.lugal.Enums.AppliedStatusEnum;
+import com.lugal.Enums.StatusResistanceEnum;
 
 public class BattleEntity implements TargetableEntity {
 
@@ -16,7 +18,7 @@ public class BattleEntity implements TargetableEntity {
 
     private final Map<StatEnum, Integer> statDeltas = new EnumMap<>(StatEnum.class);
 
-    private final Map<StatusEnum, Integer> activeStatuses = new EnumMap<>(StatusEnum.class);
+    private final Map<AppliedStatusEnum, Integer> activeStatuses = new EnumMap<>(AppliedStatusEnum.class);
 
     private boolean isDefending = false;
 
@@ -64,11 +66,18 @@ public class BattleEntity implements TargetableEntity {
         statDeltas.put(stat, currentDelta + delta);
     }
 
+    @Override 
+    public boolean hasStatus(AppliedStatusEnum status) {
+        return this.activeStatuses.containsKey(status);
+    }
+
     @Override
     public int getEffectiveStat(StatEnum stat) {
         int base = maxStats.getOrDefault(stat, 0);
-        int delta = switch (stat) {
-            case ATK, DEF, AGI, WIS -> statDeltas.getOrDefault(stat, 0);
+        float multiplier = switch (stat) {
+            case ATK:
+                this.hasActiveStatus(BuffEnum.OOMPH)
+            case DEF, AGI, WIS -> statDeltas.getOrDefault(stat, 0);
             default -> 0;
         };
         return Math.max(0, base + delta);
@@ -107,6 +116,24 @@ public class BattleEntity implements TargetableEntity {
     @Override
     public void resetTurnStates() {
         this.isDefending = false;
+    }
+
+    @Override
+    public void applyStatus(AppliedStatusEnum status, Integer duration) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'applyStatus'");
+    }
+
+    @Override
+    public float getStatusReistances(StatusResistanceEnum status) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getStatusReistances'");
+    }
+
+    @Override
+    public boolean hasStatModification(StatModEnum status) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'hasStatModification'");
     }
 
 }
