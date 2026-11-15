@@ -68,10 +68,10 @@ public class BattleEntity implements TargetableEntity {
                 (this.hasStatModification(StatModEnum.KABLUNT) ? StatModEnum.KABLUNT.modifier() : 0f);
             
             case WIS ->
-                    (this.hasStatModification(StatModEnum.PING) ? StatModEnum.PING.modifier() : 0f) +
-                    (this.hasStatModification(StatModEnum.KAPING) ? StatModEnum.KAPING.modifier() : 0f) +
-                    (this.hasStatModification(StatModEnum.DIM) ? StatModEnum.DIM.modifier() : 0f) +
-                    (this.hasStatModification(StatModEnum.KADIM) ? StatModEnum.KADIM.modifier() : 0f);
+                (this.hasStatModification(StatModEnum.PING) ? StatModEnum.PING.modifier() : 0f) +
+                (this.hasStatModification(StatModEnum.KAPING) ? StatModEnum.KAPING.modifier() : 0f) +
+                (this.hasStatModification(StatModEnum.DIM) ? StatModEnum.DIM.modifier() : 0f) +
+                (this.hasStatModification(StatModEnum.KADIM) ? StatModEnum.KADIM.modifier() : 0f);
         
             case DEF ->
                 (this.hasStatModification(StatModEnum.BUFF) ? StatModEnum.BUFF.modifier() : 0f) +
