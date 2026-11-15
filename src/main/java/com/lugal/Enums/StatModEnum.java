@@ -1,24 +1,31 @@
 package com.lugal.Enums;
 
 public enum StatModEnum {
-    
-    // Buffs
-    OOMPH,          // increases str by 100% for single target
-    OOMPHLE,        // increases str by 50% for whole party
-    BUFF,           // increases def by 50% for single target
-    KABUFF,         // increases def by 25% for whole party
-    ACCELERATE,     // increases agi by 50% for single target
-    ACCELERATLE,    // increases agi by 25% for whole party
-    PING,           // increases wis by 100% for single target
-    KAPING,         // increases wis by 50% for whole party
+    OOMPH(1.0f),
+    OOMPHLE(0.5f),
+    BUFF(0.5f),
+    KABUFF(0.25f),
+    ACCELERATE(0.5f),
+    ACCELERATLE(0.25f),
+    PING(1.0f),
+    KAPING(0.5f),
+    BLUNT(-0.5f),
+    KABLUNT(-0.25f),
+    SAP(-0.5f),
+    KASAP(-0.25f),
+    DECELERATE(-0.5f),
+    DECELERATLE(-0.25f),
+    DIM(-0.5f),
+    KADIM(-0.25f);
 
-    // Debuffs
-    BLUNT,          // decrease atk 50% for one enemy
-    KABLUNT,        // decrease atk 25% for one group
-    SAP,            // decrease def 50% for one enemy
-    KASAP,           // decrease def 25% for one group
-    DECELERATE,     // decrease agi 50% for one enemy
-    DECELERATLE,    // decrease agi 25% for one group
-    DIM,            // decrease wis 50% for one enemy
-    KADIM,          // decrease wis 25% for one group
+    private final float modifier;
+
+    StatModEnum(float modifier) {
+        this.modifier = modifier;
+    }
+
+    public float modifier() {
+        return modifier;
+    }
 }
+
