@@ -29,5 +29,8 @@ public enum AppliedStatusEnum {
     DIVINE_INTERVENTION,// decrease magical resist 25% for one group
     DODGEY_DANCE,       // increase base dodge chance to 50%
     FOCUS,              // increase next turn physical attack by 100%, always connect
-    MUSTER_STRENGTH     // increase next turn physical attack by 150%
+    MUSTER_STRENGTH,    // increase next turn physical attack by 150%
+    EGG_ON,             // increase next turn physical attack by 100%
+    DEFENDING_CHAMPION, // reduces all damage by 90%
+    DEFEND,             // halves all damage
 }
