@@ -1,5 +1,8 @@
 package com.lugal.Enums;
 
+/**
+ * Enum of statuses/status resistances
+ */
 public enum StatusEnum {
     PARALYZE,
     POISON,

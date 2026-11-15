@@ -1,5 +1,8 @@
 package com.lugal.Enums;
 
+/**
+ * Enum of support spells
+ */
 public enum BuffEnum {
     ABSORB_MAGIC,
     ACCELERATE,
@@ -19,5 +22,4 @@ public enum BuffEnum {
     PING,
     KAPING,
     SNUB
-
 }

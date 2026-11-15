@@ -1,5 +1,8 @@
 package com.lugal.Enums;
 
+/**
+ * Enum of elemental resistance/damage types
+ */
 public enum ElementEnum {
     NONE,
     FIRE_MAG,
