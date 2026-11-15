@@ -3,7 +3,6 @@ package com.lugal.Entities;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.lugal.Enums.AppliedStatusEnum;
 import com.lugal.Enums.ElementEnum;
 import com.lugal.Enums.StatusResistanceEnum;
 
@@ -13,7 +12,6 @@ public class Entity {
     private final int hp, mp, atk, str, def, res, agi, wis, luck;
     private final Map<ElementEnum, Float> elementResistances;
     private final Map<StatusResistanceEnum, Float> statusResistances;
-    private final Map<AppliedStatusEnum, Integer> activeStatuses;
 
     private Entity(Builder builder) {
         this.name = builder.name;
@@ -29,7 +27,6 @@ public class Entity {
         
         this.elementResistances = new HashMap<>(builder.elementResistances);
         this.statusResistances = new HashMap<>(builder.statusResistances);
-        this.activeStatuses = new HashMap<>();
     }
     
     public String getName() { return name; }
@@ -49,10 +46,6 @@ public class Entity {
 
     public float getStatusResistances(StatusResistanceEnum type) {
         return statusResistances.getOrDefault(type, 0.0f);
-    }
-
-    public Map<AppliedStatusEnum, Integer> getActiveStatuses() {
-        return activeStatuses;
     }
 
     static class Builder {

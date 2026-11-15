@@ -12,15 +12,13 @@ public interface TargetableEntity {
 
     int getCurrentStat(StatEnum stat);
     int getMaxStat(StatEnum stat);
-    void modifyStat(StatEnum stat, int amount);
-    void applyStatDelta(StatEnum stat, int delta);
     int getEffectiveStat(StatEnum stat);
-    void clearStatDelta(StatEnum stat);
 
     void applyStatus(AppliedStatusEnum status, Integer duration);
+    void applyStatMod(StatModEnum mod, Integer duration);
 
     float getElementResistances(ElementEnum element);
-    float getStatusReistances(StatusResistanceEnum status);
+    float getStatusResistances(StatusResistanceEnum status);
 
     boolean hasStatModification(StatModEnum status);
     boolean hasStatus(AppliedStatusEnum status);
@@ -29,5 +27,4 @@ public interface TargetableEntity {
     boolean isDefending();
     void resetTurnStates();
 
-    
 }
