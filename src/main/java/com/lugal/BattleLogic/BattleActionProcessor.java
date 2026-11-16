@@ -21,16 +21,17 @@ public class BattleActionProcessor {
             new Bounds<>(875, 998, 0.176777f),
             new Bounds<>(999, 999, 0.25f));
 
-    public int calculatePhysicalDamage(TargetableEntity caster, TargetableEntity target, ElementEnum element) {
+    public int calculatePhysicalDamage(TargetableEntity caster, TargetableEntity target, ElementEnum element, float mod) {
+        float elementResist = 1.0f - target.getElementResistances(element);
 
         float atkMod = 1.0f;
         atkMod += (caster.hasStatus(AppliedStatusEnum.MUSTER_STRENGTH) ? 1.5f : 0f);
         atkMod += (caster.hasStatus(AppliedStatusEnum.FOCUS) ? 1.0f : 0f);
         atkMod += (caster.hasStatus(AppliedStatusEnum.EGG_ON) ? 1.0f : 0f);
 
-        int maxDmg = (int) ((caster.getEffectiveStat(StatEnum.ATK) * atkMod
+        int maxDmg = (int) ((caster.getEffectiveStat(StatEnum.ATK) * atkMod * mod
                 - target.getEffectiveStat(StatEnum.DEF) / 2f) / 2f);
-        int minDmg = (int) ((caster.getEffectiveStat(StatEnum.ATK) * atkMod
+        int minDmg = (int) ((caster.getEffectiveStat(StatEnum.ATK) * atkMod * mod
                 - target.getEffectiveStat(StatEnum.DEF) / 2f) / 4f);
 
         if (minDmg > maxDmg) {
@@ -39,14 +40,8 @@ public class BattleActionProcessor {
 
         int roll = (int) (minDmg + Math.random() * ((maxDmg - minDmg) + 1));
 
-        float elementResist = 1.0f - target.getElementResistances(element);
 
-        float defenseMultiplier = 1.0f;
-        if (target.hasStatus(AppliedStatusEnum.DEFEND)) {
-            defenseMultiplier = 0.5f;
-        } else if (target.hasStatus(AppliedStatusEnum.DEFENDING_CHAMPION)) {
-            defenseMultiplier = 0.1f;
-        }
+        float defenseMultiplier = defense(caster, target);
 
         return Math.max(0, (int) (roll * elementResist * defenseMultiplier));
     }
@@ -64,23 +59,34 @@ public class BattleActionProcessor {
         atkMod += (target.hasStatus(AppliedStatusEnum.ANATHEMATISE) ? 1.25f : 0f);
 
         float defMod = 0.0f;
-        defMod += (target.hasStatus(AppliedStatusEnum.SPELL_CHECKER) ? 0.5f : 0);
-        defMod += (target.hasStatus(AppliedStatusEnum.MAGIC_BARRIER) ? 0.75f : 0);
+        defMod += (target.hasStatus(AppliedStatusEnum.SPELL_CHECKER) ? 0.5f : 0f);
+        defMod += (target.hasStatus(AppliedStatusEnum.MAGIC_BARRIER) ? 0.75f : 0f);
 
-        int[] damage_bounds = new int[] {
-                (int) (Math.round(bound1[0] + (bound2[0] - bound1[0]) * wisRatio) * (atkMod - defMod)),
-                (int) (Math.round(bound1[1] + (bound2[1] - bound1[1]) * wisRatio) * (atkMod - defMod)),
+        float[] damage_bounds = new float[] {
+                (float) (Math.round(bound1[0] + (bound2[0] - bound1[0]) * wisRatio) * (atkMod - defMod)),
+                (float) (Math.round(bound1[1] + (bound2[1] - bound1[1]) * wisRatio) * (atkMod - defMod)),
         };
         float roll = (float) (Math.random() * (damage_bounds[1] - damage_bounds[0] + 1) + damage_bounds[0]);
 
-        float defenseMultiplier = 1.0f;
-        if (target.hasStatus(AppliedStatusEnum.DEFEND)) {
-            defenseMultiplier = 0.5f;
-        } else if (target.hasStatus(AppliedStatusEnum.DEFENDING_CHAMPION)) {
-            defenseMultiplier = 0.1f;
-        }
+        float defenseMultiplier = defense(caster, target);
 
         return Math.max(0, (int) (roll * elementResist * defenseMultiplier));
+    }
+
+    public int calculateBreathDamage(TargetableEntity caster, TargetableEntity target, 
+        ElementEnum element, int[] bounds) {
+            float elementResist = 1.0f - target.getElementResistances(element);
+
+            float atkMod = 1.0f;
+            atkMod += (caster.hasStatus(AppliedStatusEnum.DEEP_BREATH) ? 1.0f : 0f);
+
+            float defMod = 0.0f;
+            defMod += (target.hasStatus(AppliedStatusEnum.INSULATE) ? 0.5f : 0f);
+            defMod += (target.hasStatus(AppliedStatusEnum.INSULATLE) ? 0.75f : 0f);
+
+            float defenseMultiplier = defense(caster, target);
+
+            return Math.max(0, (int) (roll * elementResist * defenseMultiplier));
     }
 
     public float dodgeChance(TargetableEntity caster, TargetableEntity target) {
@@ -95,5 +101,14 @@ public class BattleActionProcessor {
         float chance = Bounds.getValue(agi, EVASION_BOUNDS, base);
 
         return chance;
+    }
+
+    private float defense(TargetableEntity caster, TargetableEntity target) {
+            if (target.hasStatus(AppliedStatusEnum.DEFEND)) {
+                return 0.5f;
+            } else if (target.hasStatus(AppliedStatusEnum.DEFENDING_CHAMPION)) {
+                return 0.1f;
+            }
+            return 1.0f;
     }
 }
