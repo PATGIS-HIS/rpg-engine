@@ -25,12 +25,13 @@ public enum AppliedStatusEnum {
     INSULATE,           // increases breath resistance by 50% for single target
     INSULATLE,          // increases breath resistance by 25% for whole party
     ABSORB_MAGIC,       // absorbs mp from oncoming spells
-    ANATHEMATISE,       // decrease magical resist 50% for one enemy
-    DIVINE_INTERVENTION,// decrease magical resist 25% for one group
+    DIVINE_INTERVENTION,// decrease magical resist 50% for one enemy
+    ANATHEMATISE,       // decrease magical resist 25% for one group
     DODGY_DANCE,       // increase base dodge chance to 50%
     FOCUS,              // increase next turn physical attack by 100%, always connect
     MUSTER_STRENGTH,    // increase next turn physical attack by 150%
     EGG_ON,             // increase next turn physical attack by 100%
     DEFENDING_CHAMPION, // reduces all damage by 90%
     DEFEND,             // halves all damage
+    CASTER_SUGAR,       // increase magical output by 50%
 }
