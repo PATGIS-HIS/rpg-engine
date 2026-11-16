@@ -69,34 +69,19 @@ public class BattleEntity implements TargetableEntity {
         return this.activeStatuses.containsKey(status);
     }
 
+    private float getStatModTotal(StatModEnum canonicalBase) {
+        StatModRecord record = activeStatMods.get(canonicalBase);
+        return record == null ? 0f : canonicalBase.modifier() * record.intensity();
+    }
+
     @Override
     public int getEffectiveStat(StatEnum stat) {
         int baseStat = this.getMaxStat(stat);
         float mod = switch (stat) {
-            case ATK ->
-                (this.hasStatModification(StatModEnum.OOMPH) ? StatModEnum.OOMPH.modifier() : 0f) +
-                        (this.hasStatModification(StatModEnum.OOMPHLE) ? StatModEnum.OOMPHLE.modifier() : 0f) +
-                        (this.hasStatModification(StatModEnum.BLUNT) ? StatModEnum.BLUNT.modifier() : 0f) +
-                        (this.hasStatModification(StatModEnum.KABLUNT) ? StatModEnum.KABLUNT.modifier() : 0f);
-
-            case WIS ->
-                (this.hasStatModification(StatModEnum.PING) ? StatModEnum.PING.modifier() : 0f) +
-                        (this.hasStatModification(StatModEnum.KAPING) ? StatModEnum.KAPING.modifier() : 0f) +
-                        (this.hasStatModification(StatModEnum.DIM) ? StatModEnum.DIM.modifier() : 0f) +
-                        (this.hasStatModification(StatModEnum.KADIM) ? StatModEnum.KADIM.modifier() : 0f);
-
-            case DEF ->
-                (this.hasStatModification(StatModEnum.BUFF) ? StatModEnum.BUFF.modifier() : 0f) +
-                        (this.hasStatModification(StatModEnum.KABUFF) ? StatModEnum.KABUFF.modifier() : 0f) +
-                        (this.hasStatModification(StatModEnum.SAP) ? StatModEnum.SAP.modifier() : 0f) +
-                        (this.hasStatModification(StatModEnum.KASAP) ? StatModEnum.KASAP.modifier() : 0f);
-
-            case AGI ->
-                (this.hasStatModification(StatModEnum.ACCELERATE) ? StatModEnum.ACCELERATE.modifier() : 0f) +
-                        (this.hasStatModification(StatModEnum.ACCELERATLE) ? StatModEnum.ACCELERATLE.modifier() : 0f) +
-                        (this.hasStatModification(StatModEnum.DECELERATE) ? StatModEnum.DECELERATE.modifier() : 0f) +
-                        (this.hasStatModification(StatModEnum.DECELERATLE) ? StatModEnum.DECELERATLE.modifier() : 0f);
-
+            case ATK -> getStatModTotal(StatModEnum.OOMPHLE) + getStatModTotal(StatModEnum.KABLUNT);
+            case WIS -> getStatModTotal(StatModEnum.KAPING) + getStatModTotal(StatModEnum.KADIM);
+            case DEF -> getStatModTotal(StatModEnum.KABUFF) + getStatModTotal(StatModEnum.KASAP);
+            case AGI -> getStatModTotal(StatModEnum.ACCELERATLE) + getStatModTotal(StatModEnum.DECELERATLE);
             default -> 0f;
         };
 
@@ -113,7 +98,6 @@ public class BattleEntity implements TargetableEntity {
                 ? Math.min(existing.intensity() + incomingIntensity, canonical.maxIntensity())
                 : Math.min(incomingIntensity, canonical.maxIntensity());
 
-
         int newDuration = (existing != null)
                 ? Math.max(existing.duration(), duration)
                 : duration;
@@ -122,8 +106,26 @@ public class BattleEntity implements TargetableEntity {
     }
 
     @Override
-    public void applyStatMod(StatModEnum status, Integer duration, Integer intensity) {
-        activeStatMods.put(status, new StatModRecord(duration, intensity));
+    public void applyStatMod(StatModEnum status, Integer duration) {
+        StatModEnum canonical = status.getCanonicalStatus();
+        StatModRecord existing = activeStatMods.get(canonical);
+
+        int incomingIntensity = status.weight();
+        int newIntensity = (existing != null)
+                ? Math.min(existing.intensity() + incomingIntensity, canonical.maxIntensity())
+                : Math.min(incomingIntensity, canonical.maxIntensity());
+
+        int newDuration = (existing != null)
+                ? Math.max(existing.duration(), duration)
+                : duration;
+
+        activeStatMods.put(canonical, new StatModRecord(newDuration, newIntensity));
+    }
+
+    @Override
+    public int getStatModIntensity(StatModEnum status) {
+        StatModRecord record = this.activeStatMods.get(status.getCanonicalStatus());
+        return record != null ? record.intensity() : 0;
     }
 
     @Override
