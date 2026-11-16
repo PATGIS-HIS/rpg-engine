@@ -66,10 +66,13 @@ public class BattleEntity implements TargetableEntity {
 
     @Override
     public boolean hasStatus(AppliedStatusEnum status) {
-        return this.activeStatuses.containsKey(status);
+        AppliedStatusEnum canonical = status.getCanonicalStatus();
+        StatusRecord record = this.activeStatuses.get(canonical);
+        return record != null && record.intensity() >= status.weight();
     }
 
-    private float getStatModTotal(StatModEnum canonicalBase) {
+    @Override 
+    public float getStatModTotal(StatModEnum canonicalBase) {
         StatModRecord record = activeStatMods.get(canonicalBase);
         return record == null ? 0f : canonicalBase.modifier() * record.intensity();
     }
@@ -104,6 +107,20 @@ public class BattleEntity implements TargetableEntity {
 
         activeStatuses.put(canonical, new StatusRecord(newDuration, newIntensity));
     }
+
+    @Override 
+    public int getStatusIntensity(AppliedStatusEnum status) {
+        StatusRecord record = this.activeStatuses.get(status.getCanonicalStatus());
+        return record != null ? record.intensity() : 0;
+    }
+
+    @Override
+    public float getStatusModTotal(AppliedStatusEnum canonicalBase) {
+        StatusRecord record = activeStatuses.get(canonicalBase);
+        return record == null ? 0f : canonicalBase.modifier() * record.intensity();
+    }
+
+
 
     @Override
     public void applyStatMod(StatModEnum status, Integer duration) {
