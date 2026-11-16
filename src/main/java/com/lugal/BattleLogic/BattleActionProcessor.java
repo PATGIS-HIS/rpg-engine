@@ -1,6 +1,5 @@
 package com.lugal.BattleLogic;
 
-import java.lang.annotation.Target;
 import java.util.List;
 
 import com.lugal.Entities.TargetableEntity;
@@ -13,15 +12,15 @@ import com.lugal.Utils.Bounds;
 public class BattleActionProcessor {
 
     private static final List<Bounds<Integer, Float>> EVASION_BOUNDS = List.of(
-            new Bounds<>(1, 125, 0.015625f),
+            new Bounds<>(  1, 125, 0.015625f),
             new Bounds<>(125, 249, 0.022097f),
-            new Bounds<>(250, 374, 0.03125f),
+            new Bounds<>(250, 374, 0.031250f),
             new Bounds<>(375, 499, 0.044194f),
-            new Bounds<>(500, 624, 0.0625f),
+            new Bounds<>(500, 624, 0.062500f),
             new Bounds<>(625, 749, 0.088388f),
-            new Bounds<>(750, 874, 0.125f),
+            new Bounds<>(750, 874, 0.125000f),
             new Bounds<>(875, 998, 0.176777f),
-            new Bounds<>(999, 999, 0.25f));
+            new Bounds<>(999, 999, 0.250000f));
 
     public int calculateDamage(DamageTypeEnum type, TargetableEntity caster, TargetableEntity target,
             ElementEnum element, float baseRoll) {
