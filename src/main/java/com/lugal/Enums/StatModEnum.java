@@ -4,8 +4,8 @@ package com.lugal.Enums;
  * Turn persistant modifiers to core stats
  */
 public enum StatModEnum {
-    OOMPHLE(0.5f, 2, 1),
-    OOMPH(1.0f, 2, 2, OOMPHLE),
+    GRITTY_DITTY(0.5f, 2, 1),
+    OOMPH(1.0f, 2, 2, GRITTY_DITTY),
     KAPING(0.5f, 2, 1),
     PING(1.0f, 2, 2, KAPING),
     KABUFF(0.25f, 2, 1),
