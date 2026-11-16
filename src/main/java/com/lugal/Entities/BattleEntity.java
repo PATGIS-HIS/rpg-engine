@@ -65,7 +65,7 @@ public class BattleEntity implements TargetableEntity {
     public int getEffectiveStat(StatEnum stat) {
         int baseStat = this.getMaxStat(stat);
         float mod = switch (stat) {
-            case ATK -> getStatModTotal(StatModEnum.OOMPHLE) + getStatModTotal(StatModEnum.KABLUNT);
+            case ATK -> getStatModTotal(StatModEnum.GRITTY_DITTY) + getStatModTotal(StatModEnum.KABLUNT);
             case WIS -> getStatModTotal(StatModEnum.KAPING) + getStatModTotal(StatModEnum.KADIM);
             case DEF -> getStatModTotal(StatModEnum.KABUFF) + getStatModTotal(StatModEnum.KASAP);
             case AGI -> getStatModTotal(StatModEnum.ACCELERATLE) + getStatModTotal(StatModEnum.DECELERATLE);
