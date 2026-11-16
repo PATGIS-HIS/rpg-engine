@@ -83,6 +83,7 @@ public class BattleActionProcessor {
         return calculateDamage(DamageTypeEnum.BREATH, caster, target, element, roll);
     }
 
+
     public float dodgeChance(TargetableEntity caster, TargetableEntity target) {
         if (caster.hasStatus(AppliedStatusEnum.FOCUS)) {
             return 0f;
