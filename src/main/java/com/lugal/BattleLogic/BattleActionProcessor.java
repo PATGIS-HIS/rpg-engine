@@ -1,9 +1,11 @@
 package com.lugal.BattleLogic;
 
+import java.lang.annotation.Target;
 import java.util.List;
 
 import com.lugal.Entities.TargetableEntity;
 import com.lugal.Enums.AppliedStatusEnum;
+import com.lugal.Enums.DamageTypeEnum;
 import com.lugal.Enums.ElementEnum;
 import com.lugal.Enums.StatEnum;
 import com.lugal.Utils.Bounds;
@@ -21,79 +23,72 @@ public class BattleActionProcessor {
             new Bounds<>(875, 998, 0.176777f),
             new Bounds<>(999, 999, 0.25f));
 
+    public int calculateDamage(DamageTypeEnum type, TargetableEntity caster, TargetableEntity target,
+            ElementEnum element, float baseRoll) {
+                float elementResit = 1.0f - target.getElementResistances(element);
+                float defenseMultiplier = defense(target);
+
+                float totalDamage = baseRoll * elementResit * defenseMultiplier;
+                return Math.max(0, (int) totalDamage);
+    }
+
     public int calculatePhysicalDamage(TargetableEntity caster, TargetableEntity target, ElementEnum element, float mod) {
-        float elementResist = 1.0f - target.getElementResistances(element);
+        float atkMod = 1.0f
+                + caster.getStatusModTotal(AppliedStatusEnum.MUSTER_STRENGTH)
+                + caster.getStatusModTotal(AppliedStatusEnum.FOCUS)
+                + caster.getStatusModTotal(AppliedStatusEnum.EGG_ON);
 
-        float atkMod = 1.0f;
-        atkMod += (caster.hasStatus(AppliedStatusEnum.MUSTER_STRENGTH) ? 1.5f : 0f);
-        atkMod += (caster.hasStatus(AppliedStatusEnum.FOCUS) ? 1.0f : 0f);
-        atkMod += (caster.hasStatus(AppliedStatusEnum.EGG_ON) ? 1.0f : 0f);
+        float baseDmg = caster.getEffectiveStat(StatEnum.ATK) * atkMod * mod
+                - (target.getEffectiveStat(StatEnum.DEF) / 2f);
 
-        int maxDmg = (int) ((caster.getEffectiveStat(StatEnum.ATK) * atkMod * mod
-                - target.getEffectiveStat(StatEnum.DEF) / 2f) / 2f);
-        int minDmg = (int) ((caster.getEffectiveStat(StatEnum.ATK) * atkMod * mod
-                - target.getEffectiveStat(StatEnum.DEF) / 2f) / 4f);
+        int maxDmg = (int) (baseDmg / 2f);
+        int minDmg = Math.min((int) (baseDmg / 4f), maxDmg);
+        float roll = minDmg + (float)(Math.random() * ((maxDmg - minDmg) + 1));
 
-        if (minDmg > maxDmg) {
-            minDmg = maxDmg;
-        }
-
-        int roll = (int) (minDmg + Math.random() * ((maxDmg - minDmg) + 1));
-
-
-        float defenseMultiplier = defense(caster, target);
-
-        return Math.max(0, (int) (roll * elementResist * defenseMultiplier));
+        // Route through the pipeline
+        return calculateDamage(DamageTypeEnum.PHYSICAL, caster, target, element, roll);
     }
 
-    public int calculateMagicalDamage(TargetableEntity caster, TargetableEntity target, 
-        ElementEnum element, int maxWIS,
-        int[] bound1, int[] bound2) {
-        float elementResist = 1.0f - target.getElementResistances(element);
+    public int calculateMagicalDamage(TargetableEntity caster, TargetableEntity target,
+            ElementEnum element, int maxWIS, int[] bound1, int[] bound2) {
+        
         float wisRatio = Math.clamp(
-            (float) caster.getEffectiveStat(StatEnum.WIS) / (float) maxWIS, 0f, 1f);
-            
-        float atkMod = 1.0f;
-        atkMod += (caster.hasStatus(AppliedStatusEnum.CASTER_SUGAR) ? 1.5f : 0f);
-        atkMod += (target.hasStatus(AppliedStatusEnum.DIVINE_INTERVENTION) ? 1.5f : 0f);
-        atkMod += (target.hasStatus(AppliedStatusEnum.ANATHEMATISE) ? 1.25f : 0f);
+                (float) caster.getEffectiveStat(StatEnum.WIS) / (float) maxWIS, 0f, 1f);
 
-        float defMod = 0.0f;
-        defMod += (target.hasStatus(AppliedStatusEnum.SPELL_CHECKER) ? 0.5f : 0f);
-        defMod += (target.hasStatus(AppliedStatusEnum.MAGIC_BARRIER) ? 0.75f : 0f);
+        float atkMod = 1.0f + caster.getStatusModTotal(AppliedStatusEnum.CASTER_SUGAR);
+        float defMod = target.getStatusModTotal(AppliedStatusEnum.MAGIC_BARRIER)
+                + target.getStatusModTotal(AppliedStatusEnum.ANATHEMATISE);
 
-        float[] damage_bounds = new float[] {
-                (float) (Math.round(bound1[0] + (bound2[0] - bound1[0]) * wisRatio) * (atkMod - defMod)),
-                (float) (Math.round(bound1[1] + (bound2[1] - bound1[1]) * wisRatio) * (atkMod - defMod)),
-        };
-        float roll = (float) (Math.random() * (damage_bounds[1] - damage_bounds[0] + 1) + damage_bounds[0]);
+        float netMultiplier = Math.max(0f, atkMod - defMod);
 
-        float defenseMultiplier = defense(caster, target);
+        float minBase = Math.round(bound1[0] + (bound2[0] - bound1[0]) * wisRatio) * netMultiplier;
+        float maxBase = Math.round(bound1[1] + (bound2[1] - bound1[1]) * wisRatio) * netMultiplier;
+        float roll = (float) (Math.random() * (maxBase - minBase + 1) + minBase);
 
-        return Math.max(0, (int) (roll * elementResist * defenseMultiplier));
+        // Route through the pipeline
+        return calculateDamage(DamageTypeEnum.MAGICAL, caster, target, element, roll);
     }
 
-    public int calculateBreathDamage(TargetableEntity caster, TargetableEntity target, 
-        ElementEnum element, int[] bounds) {
-            float elementResist = 1.0f - target.getElementResistances(element);
+    public int calculateBreathDamage(TargetableEntity caster, TargetableEntity target,
+            ElementEnum element, int[] bounds) {
+        
+        float atkMod = 1f + caster.getStatusModTotal(AppliedStatusEnum.DEEP_BREATH);
+        float defMod = target.getStatusModTotal(AppliedStatusEnum.INSULATLE);
+        float netMultiplier = Math.max(0f, atkMod - defMod);
 
-            float atkMod = 1.0f;
-            atkMod += (caster.hasStatus(AppliedStatusEnum.DEEP_BREATH) ? 1.0f : 0f);
+        float min = bounds[0] * netMultiplier;
+        float max = bounds[1] * netMultiplier;
+        float roll = (float) (Math.random() * (max - min + 1) + min);
 
-            float defMod = 0.0f;
-            defMod += (target.hasStatus(AppliedStatusEnum.INSULATE) ? 0.5f : 0f);
-            defMod += (target.hasStatus(AppliedStatusEnum.INSULATLE) ? 0.75f : 0f);
-
-            float defenseMultiplier = defense(caster, target);
-
-            return Math.max(0, (int) (roll * elementResist * defenseMultiplier));
+        // Route through the pipeline
+        return calculateDamage(DamageTypeEnum.BREATH, caster, target, element, roll);
     }
 
     public float dodgeChance(TargetableEntity caster, TargetableEntity target) {
         if (caster.hasStatus(AppliedStatusEnum.FOCUS)) {
             return 0f;
         } else if (target.hasStatus(AppliedStatusEnum.DODGY_DANCE)) {
-            return 0.5f;
+            return target.getStatusModTotal(AppliedStatusEnum.DODGY_DANCE);
         }
         float base = 1f / 64f;
         int agi = target.getEffectiveStat(StatEnum.AGI);
@@ -103,12 +98,12 @@ public class BattleActionProcessor {
         return chance;
     }
 
-    private float defense(TargetableEntity caster, TargetableEntity target) {
-            if (target.hasStatus(AppliedStatusEnum.DEFEND)) {
-                return 0.5f;
-            } else if (target.hasStatus(AppliedStatusEnum.DEFENDING_CHAMPION)) {
-                return 0.1f;
-            }
-            return 1.0f;
+    private float defense(TargetableEntity target) {
+        if (target.hasStatus(AppliedStatusEnum.DEFENDING_CHAMPION)) {
+            return target.getStatusModTotal(AppliedStatusEnum.DEFENDING_CHAMPION);
+        } else if (target.hasStatus(AppliedStatusEnum.DEFEND)) {
+            return target.getStatusModTotal(AppliedStatusEnum.DEFEND);
+        }
+        return 1.0f;
     }
 }
