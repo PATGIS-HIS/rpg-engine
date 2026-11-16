@@ -10,7 +10,7 @@ public enum StatEnum {
     STR,    // strength determines atk
     DEF,    // defence = res + armour (unimplemented as of yet)
     RES,    // resilience determines def
-    AGI,    // agility determines turn order, dodge chance
+    AGI,    // agility determines turn order, evasion
     WIS,    // wisom determines spell damage
     LUCK    // determines avoidance of status effects, crit chance, spell crit chance
 }
