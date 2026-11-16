@@ -13,6 +13,9 @@ public interface TargetableEntity {
 
     int getCurrentStat(StatEnum stat);
     int getMaxStat(StatEnum stat);
+
+    void modifyStat(StatEnum stat, int amount);
+
     int getEffectiveStat(StatEnum stat);
 
     void applyStatus(AppliedStatusEnum status, Integer duration);
