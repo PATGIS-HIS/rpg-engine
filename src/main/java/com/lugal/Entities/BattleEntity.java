@@ -57,6 +57,13 @@ public class BattleEntity implements TargetableEntity {
         return maxStats.getOrDefault(stat, 0);
     }
 
+    @Override 
+    public void modifyStat(StatEnum stat, int amount) {
+        int current = getCurrentStat(stat);
+        int max = getMaxStat(stat);
+        currentStats.put(stat, Math.clamp(current + amount, 0, max));
+    }
+
     @Override
     public boolean hasStatus(AppliedStatusEnum status) {
         return this.activeStatuses.containsKey(status);
