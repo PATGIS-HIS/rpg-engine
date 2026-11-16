@@ -9,6 +9,7 @@ import com.lugal.Enums.StatusResistanceEnum;
 public interface TargetableEntity {
     
     String getName();
+    int getLevel();
 
     int getCurrentStat(StatEnum stat);
     int getMaxStat(StatEnum stat);

@@ -42,6 +42,11 @@ public class BattleEntity implements TargetableEntity {
         return baseEntity.getName();
     }
 
+    @Override 
+    public int getLevel() {
+        return baseEntity.getLevel();
+    }
+
     @Override
     public int getCurrentStat(StatEnum stat) {
         return currentStats.getOrDefault(stat, 0);

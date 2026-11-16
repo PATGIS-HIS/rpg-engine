@@ -10,18 +10,22 @@ import com.lugal.Enums.StatusResistanceEnum;
 public class Entity {
     
     private final String name;
+    private final int level;
     private final Map<StatEnum, Integer> stats;
     private final Map<ElementEnum, Float> elementResistances;
     private final Map<StatusResistanceEnum, Float> statusResistances;
 
     private Entity(Builder builder) {
         this.name = builder.name;
+        this.level = builder.level;
         this.stats = new EnumMap<>(builder.stats);
         this.elementResistances = new EnumMap<>(builder.elementResistances);
         this.statusResistances = new EnumMap<>(builder.statusResistances);
     }
     
     public String getName() { return name; }
+
+    public int getLevel() { return level; }
 
     public int getStat(StatEnum stat) {
         return stats.getOrDefault(stat, 0);
@@ -37,13 +41,18 @@ public class Entity {
 
     static class Builder {
         private String name = "";
-        
+        private int level = 1;
         private final Map<StatEnum, Integer> stats = new EnumMap<>(StatEnum.class);
         private final Map<ElementEnum, Float> elementResistances = new EnumMap<>(ElementEnum.class);
         private final Map<StatusResistanceEnum, Float> statusResistances = new EnumMap<>(StatusResistanceEnum.class);
 
         public Builder setName(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder setLevel(int level) {
+            this.level = level;
             return this;
         }
 
