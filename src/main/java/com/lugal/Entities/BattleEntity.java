@@ -21,8 +21,6 @@ public class BattleEntity implements TargetableEntity {
     private final Map<AppliedStatusEnum, StatusRecord> activeStatuses = new EnumMap<>(AppliedStatusEnum.class);
     private final Map<StatModEnum, StatModRecord> activeStatMods = new EnumMap<>(StatModEnum.class);
 
-    private boolean isDefending = false;
-
     public BattleEntity(Entity baseEntity) {
         this.baseEntity = baseEntity;
 
@@ -44,7 +42,7 @@ public class BattleEntity implements TargetableEntity {
         return baseEntity.getName();
     }
 
-    @Override 
+    @Override
     public int getLevel() {
         return baseEntity.getLevel();
     }
@@ -59,7 +57,7 @@ public class BattleEntity implements TargetableEntity {
         return maxStats.getOrDefault(stat, 0);
     }
 
-    @Override 
+    @Override
     public void modifyStat(StatEnum stat, int amount) {
         int current = getCurrentStat(stat);
         int max = getMaxStat(stat);
@@ -77,28 +75,28 @@ public class BattleEntity implements TargetableEntity {
         float mod = switch (stat) {
             case ATK ->
                 (this.hasStatModification(StatModEnum.OOMPH) ? StatModEnum.OOMPH.modifier() : 0f) +
-                (this.hasStatModification(StatModEnum.OOMPHLE) ? StatModEnum.OOMPHLE.modifier() : 0f) +
-                (this.hasStatModification(StatModEnum.BLUNT) ? StatModEnum.BLUNT.modifier() : 0f) +
-                (this.hasStatModification(StatModEnum.KABLUNT) ? StatModEnum.KABLUNT.modifier() : 0f);
-            
+                        (this.hasStatModification(StatModEnum.OOMPHLE) ? StatModEnum.OOMPHLE.modifier() : 0f) +
+                        (this.hasStatModification(StatModEnum.BLUNT) ? StatModEnum.BLUNT.modifier() : 0f) +
+                        (this.hasStatModification(StatModEnum.KABLUNT) ? StatModEnum.KABLUNT.modifier() : 0f);
+
             case WIS ->
                 (this.hasStatModification(StatModEnum.PING) ? StatModEnum.PING.modifier() : 0f) +
-                (this.hasStatModification(StatModEnum.KAPING) ? StatModEnum.KAPING.modifier() : 0f) +
-                (this.hasStatModification(StatModEnum.DIM) ? StatModEnum.DIM.modifier() : 0f) +
-                (this.hasStatModification(StatModEnum.KADIM) ? StatModEnum.KADIM.modifier() : 0f);
-        
+                        (this.hasStatModification(StatModEnum.KAPING) ? StatModEnum.KAPING.modifier() : 0f) +
+                        (this.hasStatModification(StatModEnum.DIM) ? StatModEnum.DIM.modifier() : 0f) +
+                        (this.hasStatModification(StatModEnum.KADIM) ? StatModEnum.KADIM.modifier() : 0f);
+
             case DEF ->
                 (this.hasStatModification(StatModEnum.BUFF) ? StatModEnum.BUFF.modifier() : 0f) +
-                (this.hasStatModification(StatModEnum.KABUFF) ? StatModEnum.KABUFF.modifier() : 0f) +
-                (this.hasStatModification(StatModEnum.SAP) ? StatModEnum.SAP.modifier() : 0f) +
-                (this.hasStatModification(StatModEnum.KASAP) ? StatModEnum.KASAP.modifier() : 0f);
-            
+                        (this.hasStatModification(StatModEnum.KABUFF) ? StatModEnum.KABUFF.modifier() : 0f) +
+                        (this.hasStatModification(StatModEnum.SAP) ? StatModEnum.SAP.modifier() : 0f) +
+                        (this.hasStatModification(StatModEnum.KASAP) ? StatModEnum.KASAP.modifier() : 0f);
+
             case AGI ->
                 (this.hasStatModification(StatModEnum.ACCELERATE) ? StatModEnum.ACCELERATE.modifier() : 0f) +
-                (this.hasStatModification(StatModEnum.ACCELERATLE) ? StatModEnum.ACCELERATLE.modifier() : 0f) +
-                (this.hasStatModification(StatModEnum.DECELERATE) ? StatModEnum.DECELERATE.modifier() : 0f) +
-                (this.hasStatModification(StatModEnum.DECELERATLE) ? StatModEnum.DECELERATLE.modifier() : 0f);
-            
+                        (this.hasStatModification(StatModEnum.ACCELERATLE) ? StatModEnum.ACCELERATLE.modifier() : 0f) +
+                        (this.hasStatModification(StatModEnum.DECELERATE) ? StatModEnum.DECELERATE.modifier() : 0f) +
+                        (this.hasStatModification(StatModEnum.DECELERATLE) ? StatModEnum.DECELERATLE.modifier() : 0f);
+
             default -> 0f;
         };
 
@@ -106,8 +104,21 @@ public class BattleEntity implements TargetableEntity {
     }
 
     @Override
-    public void applyStatus(AppliedStatusEnum status, Integer duration, Integer intensity) {
-        activeStatuses.put(status, new StatusRecord(duration, intensity));
+    public void applyStatus(AppliedStatusEnum status, Integer duration) {
+        AppliedStatusEnum canonical = status.getCanonicalStatus();
+        StatusRecord existing = activeStatuses.get(canonical);
+
+        int incomingIntensity = status.weight();
+        int newIntensity = (existing != null)
+                ? Math.min(existing.intensity() + incomingIntensity, canonical.maxIntensity())
+                : Math.min(incomingIntensity, canonical.maxIntensity());
+
+
+        int newDuration = (existing != null)
+                ? Math.max(existing.duration(), duration)
+                : duration;
+
+        activeStatuses.put(canonical, new StatusRecord(newDuration, newIntensity));
     }
 
     @Override
@@ -126,23 +137,14 @@ public class BattleEntity implements TargetableEntity {
     }
 
     @Override
-    public void setDefending(boolean defending) {
-        this.isDefending = defending;
-    }
-
-    @Override
-    public boolean isDefending() {
-        return this.isDefending;
+    public boolean hasStatModification(StatModEnum status) {
+        return this.activeStatMods.containsKey(status);
     }
 
     @Override
     public void resetTurnStates() {
-        this.isDefending = false;
-    }
-
-    @Override
-    public boolean hasStatModification(StatModEnum status) {
-        return this.activeStatMods.containsKey(status);
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'resetTurnStates'");
     }
 
 }
