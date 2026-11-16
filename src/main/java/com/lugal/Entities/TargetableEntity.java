@@ -18,7 +18,7 @@ public interface TargetableEntity {
 
     int getEffectiveStat(StatEnum stat);
 
-    void applyStatus(AppliedStatusEnum status, Integer duration, Integer intensity);
+    void applyStatus(AppliedStatusEnum status, Integer duration);
     void applyStatMod(StatModEnum mod, Integer duration, Integer intensity);
 
     float getElementResistances(ElementEnum element);
@@ -27,8 +27,6 @@ public interface TargetableEntity {
     boolean hasStatModification(StatModEnum status);
     boolean hasStatus(AppliedStatusEnum status);
 
-    void setDefending(boolean defending);
-    boolean isDefending();
     void resetTurnStates();
 
 }
