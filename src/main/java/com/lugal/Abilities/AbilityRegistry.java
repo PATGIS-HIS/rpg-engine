@@ -20,7 +20,8 @@ public class AbilityRegistry {
         REGISTER("attack", new Ability.Builder()
                 .setName("Attack")
                 .setEffect((caster, target, processor) -> {
-                    int damage = processor.calculatePhysicalDamage(caster, target, ElementEnum.NONE, 1f);
+                    int damage = processor.calculatePhysicalDamage(caster, target, ElementEnum.NONE,
+                            1f);
                     target.modifyStat(StatEnum.HP, -damage);
                 })
                 .build());
@@ -138,7 +139,8 @@ public class AbilityRegistry {
                 .setMpCost(3)
                 .setElementType(ElementEnum.ICE_MAG)
                 .setEffect((caster, target, processor) -> {
-                    int damage = processor.calculateMagicalDamage(caster, target, ElementEnum.ICE_MAG,
+                    int damage = processor.calculateMagicalDamage(caster, target,
+                            ElementEnum.ICE_MAG,
                             174,
                             new int[] { 25, 35 },
                             new int[] { 114, 123 });
@@ -151,7 +153,8 @@ public class AbilityRegistry {
                 .setElementType(ElementEnum.ICE_MAG)
                 .setTargetScope(TargetEnum.GROUP)
                 .setEffect((caster, target, processor) -> {
-                    int damage = processor.calculateMagicalDamage(caster, target, ElementEnum.ICE_MAG,
+                    int damage = processor.calculateMagicalDamage(caster, target,
+                            ElementEnum.ICE_MAG,
                             249,
                             new int[] { 42, 58 },
                             new int[] { 142, 157 });
@@ -164,7 +167,8 @@ public class AbilityRegistry {
                 .setElementType(ElementEnum.ICE_MAG)
                 .setTargetScope(TargetEnum.ALL_ENEMIES)
                 .setEffect((caster, target, processor) -> {
-                    int damage = processor.calculateMagicalDamage(caster, target, ElementEnum.ICE_MAG,
+                    int damage = processor.calculateMagicalDamage(caster, target,
+                            ElementEnum.ICE_MAG,
                             323,
                             new int[] { 104, 136 },
                             new int[] { 224, 256 });
@@ -177,7 +181,8 @@ public class AbilityRegistry {
                 .setElementType(ElementEnum.ICE_MAG)
                 .setTargetScope(TargetEnum.ALL_ENEMIES)
                 .setEffect((caster, target, processor) -> {
-                    int damage = processor.calculateMagicalDamage(caster, target, ElementEnum.ICE_MAG,
+                    int damage = processor.calculateMagicalDamage(caster, target,
+                            ElementEnum.ICE_MAG,
                             999,
                             new int[] { 328, 392 },
                             new int[] { 688, 752 });
@@ -398,7 +403,8 @@ public class AbilityRegistry {
                 .setMpCost(2)
                 .setTargetScope(TargetEnum.SINGLE_ALLY)
                 .setEffect((caster, target, processor) -> {
-                    int heal = processor.calculateMagicalDamage(caster, target, ElementEnum.NONE, 999,
+                    int heal = processor.calculateMagicalDamage(caster, target, ElementEnum.NONE,
+                            999,
                             new int[] { 30, 40 },
                             new int[] { 155, 165 });
                     target.modifyStat(StatEnum.HP, heal);
@@ -409,7 +415,8 @@ public class AbilityRegistry {
                 .setMpCost(4)
                 .setTargetScope(TargetEnum.SINGLE_ALLY)
                 .setEffect((caster, target, processor) -> {
-                    int heal = processor.calculateMagicalDamage(caster, target, ElementEnum.NONE, 999,
+                    int heal = processor.calculateMagicalDamage(caster, target, ElementEnum.NONE,
+                            999,
                             new int[] { 75, 95 },
                             new int[] { 290, 310 });
                     target.modifyStat(StatEnum.HP, heal);
@@ -420,7 +427,8 @@ public class AbilityRegistry {
                 .setMpCost(8)
                 .setTargetScope(TargetEnum.SINGLE_ALLY)
                 .setEffect((caster, target, processor) -> {
-                    int heal = processor.calculateMagicalDamage(caster, target, ElementEnum.NONE, 999,
+                    int heal = processor.calculateMagicalDamage(caster, target, ElementEnum.NONE,
+                            999,
                             new int[] { 165, 205 },
                             new int[] { 580, 620 });
                     target.modifyStat(StatEnum.HP, heal);
@@ -431,7 +439,8 @@ public class AbilityRegistry {
                 .setMpCost(18)
                 .setTargetScope(TargetEnum.SINGLE_ALLY)
                 .setEffect((caster, target, processor) -> {
-                    int heal = processor.calculateMagicalDamage(caster, target, ElementEnum.NONE, 999,
+                    int heal = processor.calculateMagicalDamage(caster, target, ElementEnum.NONE,
+                            999,
                             new int[] { 999, 999 },
                             new int[] { 999, 999 });
                     target.modifyStat(StatEnum.HP, heal);
@@ -444,7 +453,8 @@ public class AbilityRegistry {
                 .setMpCost(16)
                 .setTargetScope(TargetEnum.ALL_ALLIES)
                 .setEffect((caster, target, processor) -> {
-                    int heal = processor.calculateMagicalDamage(caster, target, ElementEnum.NONE, 999,
+                    int heal = processor.calculateMagicalDamage(caster, target, ElementEnum.NONE,
+                            999,
                             new int[] { 100, 120 },
                             new int[] { 330, 350 });
                     target.modifyStat(StatEnum.HP, heal);
@@ -455,7 +465,8 @@ public class AbilityRegistry {
                 .setMpCost(54)
                 .setTargetScope(TargetEnum.ALL_ALLIES)
                 .setEffect((caster, target, processor) -> {
-                    int heal = processor.calculateMagicalDamage(caster, target, ElementEnum.NONE, 999,
+                    int heal = processor.calculateMagicalDamage(caster, target, ElementEnum.NONE,
+                            999,
                             new int[] { 999, 999 },
                             new int[] { 999, 999 });
                     target.modifyStat(StatEnum.HP, heal);
@@ -600,12 +611,9 @@ public class AbilityRegistry {
                 .setMpCost(4)
                 .setTargetScope(TargetEnum.SINGLE_ENEMY)
                 .setEffect((caster, target, processor) -> {
-                    int damage = processor.calculatePhysicalDamage(caster, target, ElementType.NONE,
+                    int damage = processor.calculatePhysicalDamage(caster, target, ElementEnum.NONE,
                             .8f);
                     target.modifyStat(StatEnum.HP, -damage);
-                    if (processor.calculateRoll(caster, target, AppliedStatusEnum.SLEEP)) {
-                        target.applyStatus(AppliedStatusEnum.SLEEP);
-                    }
                 })
                 .build());
         REGISTER("poison attack", new Ability.Builder()
@@ -613,12 +621,9 @@ public class AbilityRegistry {
                 .setMpCost(4)
                 .setTargetScope(TargetEnum.SINGLE_ENEMY)
                 .setEffect((caster, target, processor) -> {
-                    int damage = processor.calculatePhysicalDamage(caster, target, ElementType.NONE,
+                    int damage = processor.calculatePhysicalDamage(caster, target, ElementEnum.NONE,
                             .8f);
                     target.modifyStat(StatEnum.HP, -damage);
-                    if (processor.calculateRoll(caster, target, AppliedStatusEnum.POISON)) {
-                        target.applyStatus(AppliedStatusEnum.POISON);
-                    }
                 })
                 .build());
         REGISTER("venom attack", new Ability.Builder()
@@ -626,12 +631,9 @@ public class AbilityRegistry {
                 .setMpCost(4)
                 .setTargetScope(TargetEnum.SINGLE_ENEMY)
                 .setEffect((caster, target, processor) -> {
-                    int damage = processor.calculatePhysicalDamage(caster, target, ElementType.NONE,
+                    int damage = processor.calculatePhysicalDamage(caster, target, ElementEnum.NONE,
                             .8f);
                     target.modifyStat(StatEnum.HP, -damage);
-                    if (processor.calculateRoll(caster, target, AppliedStatusEnum.VENOM)) {
-                        target.applyStatus(AppliedStatusEnum.VENOM);
-                    }
                 })
                 .build());
         REGISTER("paralysis attack", new Ability.Builder()
@@ -639,12 +641,141 @@ public class AbilityRegistry {
                 .setMpCost(4)
                 .setTargetScope(TargetEnum.SINGLE_ENEMY)
                 .setEffect((caster, target, processor) -> {
-                    int damage = processor.calculatePhysicalDamage(caster, target, ElementType.NONE,
+                    int damage = processor.calculatePhysicalDamage(caster, target, ElementEnum.NONE,
                             .8f);
                     target.modifyStat(StatEnum.HP, -damage);
-                    if (processor.calculateRoll(caster, target, AppliedStatusEnum.PARALYZE)) {
-                        target.applyStatus(AppliedStatusEnum.PARALYZE);
-                    }
+                })
+                .build());
+
+        // ==============
+        // Breath Attacks
+        // ==============
+
+        // Fire breath
+        REGISTER("fire breath", new Ability.Builder()
+                .setName("Fire Breath")
+                .setElementType(ElementEnum.FIRE_PHYS)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    int damage = processor.calculateBreathDamage(caster, target,
+                            ElementEnum.FIRE_PHYS, new int[] { 20, 30 });
+                    target.modifyStat(StatEnum.HP, -damage);
+                })
+                .build());
+        REGISTER("flame breath", new Ability.Builder()
+                .setName("Flame Breath")
+                .setElementType(ElementEnum.FIRE_PHYS)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    int damage = processor.calculateBreathDamage(caster, target,
+                            ElementEnum.FIRE_PHYS, new int[] { 40, 60 });
+                    target.modifyStat(StatEnum.HP, -damage);
+                })
+                .build());
+        REGISTER("scorch", new Ability.Builder()
+                .setName("Scorch")
+                .setElementType(ElementEnum.FIRE_PHYS)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    int damage = processor.calculateBreathDamage(caster, target,
+                            ElementEnum.FIRE_PHYS, new int[] { 150, 170 });
+                    target.modifyStat(StatEnum.HP, -damage);
+                })
+                .build());
+        REGISTER("hellfire", new Ability.Builder()
+                .setName("Hellfire")
+                .setMpCost(15)
+                .setElementType(ElementEnum.FIRE_PHYS)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    int damage = processor.calculateBreathDamage(caster, target,
+                            ElementEnum.FIRE_PHYS, new int[] { 210, 250 });
+                    target.modifyStat(StatEnum.HP, -damage);
+                })
+                .build());
+
+        // Ice breath
+        REGISTER("cool breath", new Ability.Builder()
+                .setName("Cool Breath")
+                .setElementType(ElementEnum.ICE_PHYS)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    int damage = processor.calculateBreathDamage(caster, target,
+                            ElementEnum.ICE_MAG, new int[] { 30, 45 });
+                    target.modifyStat(StatEnum.HP, -damage);
+                })
+                .build());
+        REGISTER("chilly breath", new Ability.Builder()
+                .setName("Chilly Breath")
+                .setElementType(ElementEnum.ICE_PHYS)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    int damage = processor.calculateBreathDamage(caster, target,
+                            ElementEnum.ICE_MAG, new int[] { 50, 60 });
+                    target.modifyStat(StatEnum.HP, -damage);
+                })
+                .build());
+        REGISTER("Freezing Blizzard", new Ability.Builder()
+                .setName("Freezing Blizzard")
+                .setElementType(ElementEnum.ICE_PHYS)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    int damage = processor.calculateBreathDamage(caster, target,
+                            ElementEnum.ICE_MAG, new int[] { 120, 140 });
+                    target.modifyStat(StatEnum.HP, -damage);
+                })
+                .build());
+        REGISTER("c-c-cold breath", new Ability.Builder()
+                .setName("C-c-cold Breath")
+                .setMpCost(12)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    int damage = processor.calculateBreathDamage(caster, target,
+                            ElementEnum.ICE_PHYS, new int[] { 210, 230 });
+                    target.modifyStat(StatEnum.HP, -damage);
+                })
+                .build());
+
+        // Status breath
+        REGISTER("poison breath", new Ability.Builder()
+                .setName("Poison Breath")
+                .setMpCost(3)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+
+                    target.applyStatus(AppliedStatusEnum.POISON, 3);
+                })
+                .build());
+        REGISTER("venom breath", new Ability.Builder()
+                .setName("Venom Breath")
+                .setMpCost(8)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatus(AppliedStatusEnum.VENOM, 3);
+                })
+                .build());
+        REGISTER("paralysing gas", new Ability.Builder()
+                .setName("Paralysing Gas")
+                .setMpCost(5)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatus(AppliedStatusEnum.PARALYZE, 3);
+                })
+                .build());
+        REGISTER("sweet breath", new Ability.Builder()
+                .setName("Sweet Breath")
+                .setMpCost(5)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatus(AppliedStatusEnum.SNOOZE, 3);
+                })
+                .build());
+        REGISTER("sandstorm", new Ability.Builder()
+                .setName("Sandstorm")
+                .setMpCost(5)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatus(AppliedStatusEnum.DAZZLE, 3);
                 })
                 .build());
     }
