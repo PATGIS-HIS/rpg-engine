@@ -1,13 +1,15 @@
 package com.lugal.Abilities;
 
-import java.lang.annotation.ElementType;
+import java.lang.Thread.State;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.lugal.Enums.AppliedStatusEnum;
 import com.lugal.Enums.ElementEnum;
 import com.lugal.Enums.StatEnum;
+import com.lugal.Enums.StatModEnum;
 import com.lugal.Enums.TargetEnum;
+import com.lugal.Utils.RNG;
 
 public class AbilityRegistry {
     private static final Map<String, Ability> ABILITIES = new HashMap<>();
@@ -563,7 +565,7 @@ public class AbilityRegistry {
                 })
                 .build());
         REGISTER("hallowed slash", new Ability.Builder()
-                .setName("Sacred Slash")
+                .setName("Hallowed Slash")
                 .setElementType(ElementEnum.LIGHT_PHYS)
                 .setTargetScope(TargetEnum.SINGLE_ENEMY)
                 .setEffect((caster, target, processor) -> {
@@ -581,6 +583,7 @@ public class AbilityRegistry {
                     int damage = processor.calculatePhysicalDamage(caster, target,
                             ElementEnum.LIGHT_PHYS, 1.6f);
                     target.modifyStat(StatEnum.HP, -damage);
+
                 })
                 .build());
         REGISTER("shade slash", new Ability.Builder()
@@ -778,5 +781,136 @@ public class AbilityRegistry {
                     target.applyStatus(AppliedStatusEnum.DAZZLE, 3);
                 })
                 .build());
+
+        // Buffs
+        REGISTER("oomph", new Ability.Builder()
+                .setName("Oomph")
+                .setMpCost(6)
+                .setTargetScope(TargetEnum.SINGLE_ALLY)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.OOMPH, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("gritty ditty", new Ability.Builder()
+                .setName("Gritty Ditty")
+                .setMpCost(8)
+                .setTargetScope(TargetEnum.ALL_ALLIES)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.GRITTY_DITTY, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("ping", new Ability.Builder()
+                .setName("Ping")
+                .setMpCost(4)
+                .setTargetScope(TargetEnum.SINGLE_ALLY)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.PING, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("kaping", new Ability.Builder()
+                .setName("Kaping")
+                .setMpCost(7)
+                .setTargetScope(TargetEnum.ALL_ALLIES)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.KAPING, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("buff", new Ability.Builder()
+                .setName("Buff")
+                .setMpCost(3)
+                .setTargetScope(TargetEnum.SINGLE_ENEMY)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.BUFF, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("kabuff", new Ability.Builder()
+                .setName("Kabuff")
+                .setMpCost(4)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.KABUFF, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("accelerate", new Ability.Builder()
+                .setName("Accelerate")
+                .setMpCost(2)
+                .setTargetScope(TargetEnum.SINGLE_ALLY)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.ACCELERATE, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("acceleratle", new Ability.Builder()
+                .setName("Acceleratle")
+                .setMpCost(4)
+                .setTargetScope(TargetEnum.ALL_ALLIES)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.ACCELERATLE, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("blunt", new Ability.Builder()
+                .setName("Blunt")
+                .setMpCost(6)
+                .setTargetScope(TargetEnum.SINGLE_ENEMY)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.BLUNT, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("kablunt", new Ability.Builder()
+                .setName("Kablunt")
+                .setMpCost(8)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.KABLUNT, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("dim", new Ability.Builder()
+                .setName("Dim")
+                .setMpCost(3)
+                .setTargetScope(TargetEnum.SINGLE_ENEMY)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.DIM, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("kadim", new Ability.Builder()
+                .setName("Kadim")
+                .setMpCost(5)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.KADIM, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("sap", new Ability.Builder()
+                .setName("Sap")
+                .setMpCost(3)
+                .setTargetScope(TargetEnum.SINGLE_ENEMY)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.SAP, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("kasap", new Ability.Builder()
+                .setName("Kasap")
+                .setMpCost(5)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.KASAP, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("decelerate", new Ability.Builder()
+                .setName("Decelerate")
+                .setMpCost(3)
+                .setTargetScope(TargetEnum.SINGLE_ENEMY)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.DECELERATE, RNG.rand(6, 9));
+                })
+                .build());
+        REGISTER("deceleratle", new Ability.Builder()
+                .setName("Deceleratle")
+                .setMpCost(4)
+                .setTargetScope(TargetEnum.ALL_ENEMIES)
+                .setEffect((caster, target, processor) -> {
+                    target.applyStatMod(StatModEnum.DECELERATLE, RNG.rand(6, 9));
+                })
+                .build());
+        
     }
 }
