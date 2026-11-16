@@ -8,29 +8,28 @@ import com.lugal.Enums.StatusResistanceEnum;
 
 public interface TargetableEntity {
     
+    // Getters
     String getName();
     int getLevel();
-
     int getCurrentStat(StatEnum stat);
     int getMaxStat(StatEnum stat);
-
-    void modifyStat(StatEnum stat, int amount);
-
     int getEffectiveStat(StatEnum stat);
-
-    void applyStatus(AppliedStatusEnum status, Integer duration);
-    int getStatusIntensity(AppliedStatusEnum status);
-    float getStatusModTotal(AppliedStatusEnum status);
-
-    void applyStatMod(StatModEnum status, Integer duration);
-    int getStatModIntensity(StatModEnum status);
-    float getStatModTotal(StatModEnum status);
-
     float getElementResistances(ElementEnum element);
     float getStatusResistances(StatusResistanceEnum status);
 
-    boolean hasStatModification(StatModEnum status);
+    void modifyStat(StatEnum stat, int amount);
+
+    // Applied statuses
+    void applyStatus(AppliedStatusEnum status, Integer duration);
+    int getStatusIntensity(AppliedStatusEnum status);
+    float getStatusModTotal(AppliedStatusEnum status);
     boolean hasStatus(AppliedStatusEnum status);
+
+    // Stat modifications
+    void applyStatMod(StatModEnum status, Integer duration);
+    int getStatModIntensity(StatModEnum status);
+    float getStatModTotal(StatModEnum status);
+    boolean hasStatModification(StatModEnum status);
 
     void resetTurnStates();
 

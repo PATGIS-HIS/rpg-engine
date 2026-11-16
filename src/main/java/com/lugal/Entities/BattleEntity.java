@@ -37,6 +37,10 @@ public class BattleEntity implements TargetableEntity {
         currentStats.putAll(maxStats);
     }
 
+    // =======
+    // Getters
+    // =======
+
     @Override
     public String getName() {
         return baseEntity.getName();
@@ -58,26 +62,6 @@ public class BattleEntity implements TargetableEntity {
     }
 
     @Override
-    public void modifyStat(StatEnum stat, int amount) {
-        int current = getCurrentStat(stat);
-        int max = getMaxStat(stat);
-        currentStats.put(stat, Math.clamp(current + amount, 0, max));
-    }
-
-    @Override
-    public boolean hasStatus(AppliedStatusEnum status) {
-        AppliedStatusEnum canonical = status.getCanonicalStatus();
-        StatusRecord record = this.activeStatuses.get(canonical);
-        return record != null && record.intensity() >= status.weight();
-    }
-
-    @Override 
-    public float getStatModTotal(StatModEnum canonicalBase) {
-        StatModRecord record = activeStatMods.get(canonicalBase);
-        return record == null ? 0f : canonicalBase.modifier() * record.intensity();
-    }
-
-    @Override
     public int getEffectiveStat(StatEnum stat) {
         int baseStat = this.getMaxStat(stat);
         float mod = switch (stat) {
@@ -90,6 +74,27 @@ public class BattleEntity implements TargetableEntity {
 
         return (int) (baseStat * (1f + mod));
     }
+
+    @Override
+    public float getElementResistances(ElementEnum element) {
+        return baseEntity.getElementalResistances(element);
+    }
+
+    @Override
+    public float getStatusResistances(StatusResistanceEnum status) {
+        return baseEntity.getStatusResistances(status);
+    }
+
+    @Override
+    public void modifyStat(StatEnum stat, int amount) {
+        int current = getCurrentStat(stat);
+        int max = getMaxStat(stat);
+        currentStats.put(stat, Math.clamp(current + amount, 0, max));
+    }
+
+    // ================
+    // Applied Statuses
+    // ================
 
     @Override
     public void applyStatus(AppliedStatusEnum status, Integer duration) {
@@ -108,7 +113,7 @@ public class BattleEntity implements TargetableEntity {
         activeStatuses.put(canonical, new StatusRecord(newDuration, newIntensity));
     }
 
-    @Override 
+    @Override
     public int getStatusIntensity(AppliedStatusEnum status) {
         StatusRecord record = this.activeStatuses.get(status.getCanonicalStatus());
         return record != null ? record.intensity() : 0;
@@ -120,7 +125,16 @@ public class BattleEntity implements TargetableEntity {
         return record == null ? 0f : canonicalBase.modifier() * record.intensity();
     }
 
+    @Override
+    public boolean hasStatus(AppliedStatusEnum status) {
+        AppliedStatusEnum canonical = status.getCanonicalStatus();
+        StatusRecord record = this.activeStatuses.get(canonical);
+        return record != null && record.intensity() >= status.weight();
+    }
 
+    // ==================
+    // Stat modifications
+    // ==================
 
     @Override
     public void applyStatMod(StatModEnum status, Integer duration) {
@@ -146,13 +160,9 @@ public class BattleEntity implements TargetableEntity {
     }
 
     @Override
-    public float getElementResistances(ElementEnum element) {
-        return baseEntity.getElementalResistances(element);
-    }
-
-    @Override
-    public float getStatusResistances(StatusResistanceEnum status) {
-        return baseEntity.getStatusResistances(status);
+    public float getStatModTotal(StatModEnum canonicalBase) {
+        StatModRecord record = activeStatMods.get(canonicalBase);
+        return record == null ? 0f : canonicalBase.modifier() * record.intensity();
     }
 
     @Override
