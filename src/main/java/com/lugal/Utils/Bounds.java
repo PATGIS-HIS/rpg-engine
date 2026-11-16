@@ -9,12 +9,12 @@ public record Bounds<T extends Number, V>(T min, T max, V value) {
              && number.doubleValue() <= max.doubleValue();
     }
 
-    public static <T extends Number, V> V getValue(T number, List<Bounds<T, V>> boundsList) {
+    public static <T extends Number, V> V getValue(T number, List<Bounds<T, V>> boundsList, V fallback) {
         for (Bounds<T, V> bound : boundsList) {
             if (bound.contains(number)) {
                 return bound.value();
             }
         }
-        return null;
+        return fallback;
     }
 }
