@@ -18,8 +18,8 @@ public interface TargetableEntity {
 
     int getEffectiveStat(StatEnum stat);
 
-    void applyStatus(AppliedStatusEnum status, Integer duration);
-    void applyStatMod(StatModEnum mod, Integer duration);
+    void applyStatus(AppliedStatusEnum status, Integer duration, Integer intensity);
+    void applyStatMod(StatModEnum mod, Integer duration, Integer intensity);
 
     float getElementResistances(ElementEnum element);
     float getStatusResistances(StatusResistanceEnum status);

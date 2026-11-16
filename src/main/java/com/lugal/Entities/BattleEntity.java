@@ -8,6 +8,8 @@ import com.lugal.Enums.StatEnum;
 import com.lugal.Enums.StatModEnum;
 import com.lugal.Enums.AppliedStatusEnum;
 import com.lugal.Enums.StatusResistanceEnum;
+import com.lugal.Records.StatModRecord;
+import com.lugal.Records.StatusRecord;
 
 public class BattleEntity implements TargetableEntity {
 
@@ -16,8 +18,8 @@ public class BattleEntity implements TargetableEntity {
     private final Map<StatEnum, Integer> currentStats = new EnumMap<>(StatEnum.class);
     private final Map<StatEnum, Integer> maxStats = new EnumMap<>(StatEnum.class);
 
-    private final Map<AppliedStatusEnum, Integer> activeStatuses = new EnumMap<>(AppliedStatusEnum.class);
-    private final Map<StatModEnum, Integer> activeStatMods = new EnumMap<>(StatModEnum.class);
+    private final Map<AppliedStatusEnum, StatusRecord> activeStatuses = new EnumMap<>(AppliedStatusEnum.class);
+    private final Map<StatModEnum, StatModRecord> activeStatMods = new EnumMap<>(StatModEnum.class);
 
     private boolean isDefending = false;
 
@@ -104,13 +106,13 @@ public class BattleEntity implements TargetableEntity {
     }
 
     @Override
-    public void applyStatus(AppliedStatusEnum status, Integer duration) {
-        activeStatuses.put(status, duration);
+    public void applyStatus(AppliedStatusEnum status, Integer duration, Integer intensity) {
+        activeStatuses.put(status, new StatusRecord(duration, intensity));
     }
 
     @Override
-    public void applyStatMod(StatModEnum status, Integer duration) {
-        activeStatMods.put(status, duration);
+    public void applyStatMod(StatModEnum status, Integer duration, Integer intensity) {
+        activeStatMods.put(status, new StatModRecord(duration, intensity));
     }
 
     @Override
