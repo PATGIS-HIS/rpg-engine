@@ -1,6 +1,5 @@
 package com.lugal.BattleLogic;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.lugal.Entities.TargetableEntity;
