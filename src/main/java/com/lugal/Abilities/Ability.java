@@ -5,6 +5,7 @@ import java.util.List;
 import com.lugal.BattleLogic.BattleActionProcessor;
 import com.lugal.Entities.TargetableEntity;
 import com.lugal.Enums.ElementEnum;
+import com.lugal.Enums.StatEnum;
 import com.lugal.Enums.AppliedStatusEnum;
 import com.lugal.Enums.TargetEnum;
 
@@ -25,10 +26,17 @@ public class Ability {
         this.effect = builder.effect;
     }
 
-    public void execute(TargetableEntity caster, List<TargetableEntity> targets, BattleActionProcessor processor) {
+    public boolean execute(TargetableEntity caster, List<TargetableEntity> targets, BattleActionProcessor processor) {
+        if (caster.getCurrentStat(StatEnum.MP) < mpCost) {
+            return false;
+        }
+        if (mpCost > 0) {
+            caster.modifyStat(StatEnum.MP, -mpCost);
+        }
         targetScope.filterTargets(caster, targets).forEach(target -> {
             effect.apply(caster, target, processor);
         });
+        return true;
     }
 
     public String getName() { return name; }
